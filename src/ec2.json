@@ -1,0 +1,47 @@
+{
+    "instances": [
+      {
+        "type": "t2.micro",
+        "vCPUs": 1,
+        "RAM (GiB)": 1,
+        "On-Demand Price (Linux)": "$0.0116 per hour"
+      },
+      {
+        "type": "t3.micro",
+        "vCPUs": 2,
+        "RAM (GiB)": 1,
+        "On-Demand Price (Linux)": "$0.0136 per hour"
+      },
+      {
+        "type": "m5.large",
+        "vCPUs": 2,
+        "RAM (GiB)": 8,
+        "On-Demand Price (Linux)": "$0.096 per hour"
+      },
+      {
+        "type": "m5.xlarge",
+        "vCPUs": 4,
+        "RAM (GiB)": 16,
+        "On-Demand Price (Linux)": "$0.192 per hour"
+      },
+      {
+        "type": "c5.large",
+        "vCPUs": 2,
+        "RAM (GiB)": 4,
+        "On-Demand Price (Linux)": "$0.085 per hour"
+      },
+      {
+        "type": "c5.xlarge",
+        "vCPUs": 4,
+        "RAM (GiB)": 8,
+        "On-Demand Price (Linux)": "$0.17 per hour"
+      },
+      {
+        "type": "r5.large",
+        "vCPUs": 2,
+        "RAM (GiB)": 16,
+        "On-Demand Price (Linux)": "<Starting Price>"
+      }
+    ]
+  }
+  

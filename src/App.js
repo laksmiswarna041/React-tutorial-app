@@ -1,25 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import InstanceTable from "./InstanceTable.js";
+import ec2 from "./ec2.json"
 
-function App() {
+function MyApp() {
+  console.log(ec2)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div className="header">
+      <center><h1>EC2 instances in AWS</h1></center>
+      <center><h3>Fetched from local</h3></center>
+      <center><InstanceTable /></center>
+      </div>
     </div>
   );
-}
+};
 
-export default App;
+
+
+export default MyApp;
