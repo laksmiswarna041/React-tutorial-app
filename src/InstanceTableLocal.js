@@ -2,7 +2,7 @@ import React from 'react';
 import instancesData from './ec2.json';
 import './style.css';
 
-const InstanceTable = () => {
+const InstanceTableLocal = () => {
   const instances = instancesData.instances;
 
   return (
@@ -29,4 +29,4 @@ const InstanceTable = () => {
   );
 };
 
-export default InstanceTable;
+export default InstanceTableLocal;

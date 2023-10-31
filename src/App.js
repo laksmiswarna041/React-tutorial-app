@@ -1,20 +1,16 @@
-import InstanceTable from "./InstanceTable.js";
-import ec2 from "./ec2.json"
+import React, { useState } from 'react';
+import './style.css';
+import FilteredList from './filter';
+import DataTable from './DataTable';
 
-function MyApp() {
-  console.log(ec2)
-
+const App = () => {
   return (
     <div>
-      <div className="header">
-      <center><h1>EC2 instances in AWS</h1></center>
-      <center><h3>Fetched from local</h3></center>
-      <center><InstanceTable /></center>
-      </div>
+      <center><DataTable/></center>
+      <FilteredList/>
     </div>
-  );
-};
+  )
+}
 
 
-
-export default MyApp;
+export default App;
