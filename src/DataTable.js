@@ -3,10 +3,10 @@ import './style.css';
 
 
 var jsonData;
-
 const today = new Date();
 console.log(today)
 console.log(`Now milliseconds: ${today.getUTCMilliseconds()}`)
+var typeOfInstances=[], typesToDisplay=[];
 
 const DataTable = () => {
 
@@ -24,7 +24,6 @@ const DataTable = () => {
     var day = String(date.getDate()).padStart(2,'0');
     var d1 = today.getDate() - day;
 
-
     var hours = String(date.getUTCHours()).padStart(2,'0');
     var h1 = today.getUTCHours() - hours;
 
@@ -37,23 +36,15 @@ const DataTable = () => {
     var milliseconds = String(date.getUTCMilliseconds()).padStart(3,'0');
     var ms1 = today.getUTCMilliseconds() - milliseconds;
 
-
-    var formattedDateAndTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds}`;
+    //var formattedDateAndTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds}`;
     //console.log("Formatted Date and Time:", formattedDateAndTime)
-
 
     var diffDateAndTime = `${y1} years, ${mo1} months, ${d1} days, ${h1} hrs:${m1} mins:${s1} secs:${ms1} ms`;
     //console.log("Diff Date and Time:", diffDateAndTime)
 
-
-    if ((y1 === 0)){
-      diffDateAndTime = `${mo1} months, ${d1} days, ${h1} hrs:${m1} mins:${s1} secs:${ms1} ms`;
-    }
-    
     return diffDateAndTime;
-
-   
   }
+
   function findTag(value){
     var res= "Name not found";
     for(const tag of value.Tags){
@@ -63,24 +54,49 @@ const DataTable = () => {
       }
     }
   }
+
+  const [dataSelected, setSelectData] = useState('');
+
+  const handleSelectChange = (e) => {
+    setSelectData(e.target.value);
+    for(const i of jsonparsedData){
+      if(e.target.value === i["InstanceType"]){
+        typesToDisplay.push(i)
+      }
+    }
+    //console.log(e.target.value);
+    displayResult(e.target.value);
+  };
   
+  
+  function displayResult(type){
+    console.log("Type selected: ", type)
+    var filters=jsonparsedData.filter(instance => instance.InstanceType === type)
+    setData(filters)
+    console.log(filters)
+    return jsonparsedData;
+  }
+
   const fetchData = async () => {
     try {
       const response = await fetch('http://localhost:3001/ec2Data');
       jsonData = await response.json();
-      console.log(jsonData)
+      //console.log(jsonData)
       setData(jsonData)
-      //console.log(jsonData["Reservations"])
-      //console.log(jsonData["Reservations"][0])
-      //console.log(jsonData["Reservations"][0]["Instances"])
-      // console.log(jsonData["Reservations"][0]["Instances"][0])
-      // console.log(jsonData["Reservations"][0]["Instances"][0]["InstanceId"])
+      for(const i of jsonData){
+        //console.log(i["InstanceType"])
+        if(!typeOfInstances.includes(i["InstanceType"])){
+          typeOfInstances.push(i["InstanceType"])
+        }
+      }
+      //console.log("Types: ", typeOfInstances)
       // console.log(jsonData["Reservations"][0]["Instances"][0]["InstanceType"])
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-//console.log(jsonparsedData)
+
+
   return (
     <div>
       <center><button onClick={fetchData}>Fetch</button></center>
@@ -90,7 +106,17 @@ const DataTable = () => {
           <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Type</th>
+            <th>Type 
+              <br/>
+                <select value={dataSelected} onChange={handleSelectChange}>
+                  <option value="">Select</option>
+                    {typeOfInstances.map((data,index)=>{
+                      return(
+                        <option value={data} key={index}>{data}</option>
+                      )
+                    })}
+                </select> 
+            </th>
             <th>Age</th>
           </tr>
         </thead>
@@ -111,6 +137,5 @@ const DataTable = () => {
     </div>
   )
 }
-
 
 export default DataTable;
