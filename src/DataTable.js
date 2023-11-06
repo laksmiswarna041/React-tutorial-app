@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './style.css';
 
 
@@ -10,7 +10,9 @@ var typeOfInstances=[], typesToDisplay=[];
 
 const DataTable = () => {
 
-  const [jsonparsedData,setData] = useState([])
+  const [jsonparsedData,setData] = useState([]);
+  const [dataSelected, setSelectData] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
   
   function calcAge(sentAge){
     var date = new Date(sentAge);
@@ -55,10 +57,9 @@ const DataTable = () => {
     }
   }
 
-  const [dataSelected, setSelectData] = useState('');
-
-  const handleSelectChange = (e) => {
+   function handleSelectChange(e){
     setSelectData(e.target.value);
+    //console.log("jsonparsedData",jsonparsedData)
     for(const i of jsonparsedData){
       if(e.target.value === i["InstanceType"]){
         typesToDisplay.push(i)
@@ -66,15 +67,17 @@ const DataTable = () => {
     }
     //console.log(e.target.value);
     displayResult(e.target.value);
-  };
+    return dataSelected;
+  }
   
-  
-  function displayResult(type){
+   function displayResult(type){
+    //flg= true
+    var filters;
     console.log("Type selected: ", type)
-    var filters=jsonparsedData.filter(instance => instance.InstanceType === type)
-    setData(filters)
+    filters=jsonparsedData.filter(instance => instance.InstanceType === type)
+    setFilteredData(filters)
     console.log(filters)
-    return jsonparsedData;
+    return filters;
   }
 
   const fetchData = async () => {
@@ -83,6 +86,7 @@ const DataTable = () => {
       jsonData = await response.json();
       //console.log(jsonData)
       setData(jsonData)
+      setSelectData("Select")
       for(const i of jsonData){
         //console.log(i["InstanceType"])
         if(!typeOfInstances.includes(i["InstanceType"])){
@@ -96,7 +100,6 @@ const DataTable = () => {
       }
     };
 
-
   return (
     <div>
       <center><button onClick={fetchData}>Fetch</button></center>
@@ -109,7 +112,7 @@ const DataTable = () => {
             <th>Type 
               <br/>
                 <select value={dataSelected} onChange={handleSelectChange}>
-                  <option value="">Select</option>
+                  <option value="Select">Select</option>
                     {typeOfInstances.map((data,index)=>{
                       return(
                         <option value={data} key={index}>{data}</option>
@@ -120,7 +123,7 @@ const DataTable = () => {
             <th>Age</th>
           </tr>
         </thead>
-        {jsonparsedData?.map((data,index)=>{
+        {((dataSelected==='Select')?jsonparsedData:filteredData)?.map((data,index)=>{
         return(
           <tbody>
             <tr>
